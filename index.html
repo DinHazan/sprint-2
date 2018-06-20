@@ -1,15 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
     <title>Document</title>
 </head>
+
 <body>
+    <header class="flex">
+        <nav class="flex space-between ">
+            <form action="/action_page.php" method="get">
+                <input list="value" name="value" class="val">
+                <datalist id="value">
+                    <option value="Happy">
+                    <option value="Crazy">
+                    <option value="Sarcastic">
+                    <option value="Sad">
+                    <option value="Animal">
+                </datalist>
+                <input type="button" onclick="sortByTag(event)">
+            </form>
+            </div>
+            </form>
+            <ul>
 
-    
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <ul class="img-container flex container clean-list">
+        </ul>
+        <canvas id="myCanvas" style="outline:1px solid grey"></canvas>
+    </main>
+    <footer>
 
+    </footer>
 
+    <script src="js/imgs-service.js"></script>
     <script src="js/main.js"></script>
 </body>
+
 </html>
