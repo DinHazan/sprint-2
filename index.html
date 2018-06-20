@@ -11,14 +11,14 @@
 <body>
     <header class="flex">
         <nav class="flex space-between ">
-            <form action="/action_page.php" method="get">
+            <form>
                 <input list="value" name="value" class="val">
                 <datalist id="value">
                     <option value="Happy">
-                    <option value="Crazy">
-                    <option value="Sarcastic">
-                    <option value="Sad">
-                    <option value="Animal">
+                        <option value="Crazy">
+                            <option value="Sarcastic">
+                                <option value="Sad">
+                                    <option value="Animal">
                 </datalist>
                 <input type="button" onclick="sortByTag(event)">
             </form>
@@ -30,9 +30,32 @@
         </nav>
     </header>
     <main>
+        <div>
+            <button onclick="returnBack()"></button>
+        </div>
         <ul class="img-container flex container clean-list">
         </ul>
-        <canvas id="myCanvas" style="outline:1px solid grey"></canvas>
+        <div class="canvas-container">
+            <canvas id="myCanvas" style="outline:1px solid grey"></canvas>
+            <div class="style-tools">
+                <form>
+                    Enter Your Text :
+                    <br>
+                    <input class="canvasTxt" type="text" name="text">
+                    <input list="font" name="value" class="font"  onkeyup="drawText(event , this.value)">
+                    <datalist id="font">
+                        <option value="arial">
+                            <option value="sans-serif">
+                    </datalist>
+                    <div class="fontSize-container">
+                        <div class="font-size">0</div>
+                        <button onclick="fontSizeRender(event ,(+2))">▲</button>
+                        <button onclick="fontSizeRender(event ,(-2))">▼</button>
+                    </div>
+                    <input type="button" onclick="drawText(event)">
+                </form>
+            </div>
+        </div>
     </main>
     <footer>
 

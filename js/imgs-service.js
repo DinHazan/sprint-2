@@ -3,7 +3,7 @@
 var gImgs = [{
         id: 1,
         url: 'img/001.jpg',
-        keywords: ['happy' , 'crazy']
+        keywords: ['happy', 'crazy']
     },
     {
         id: 2,
@@ -63,6 +63,22 @@ var gImgs = [{
 //     },
 
 // ]
+
+
+var gMeme = {
+    selectedImgId: 5,
+    txts: [{
+        line: 'I  never  eat  Falafel',
+        size: 20,
+        align: 'left',
+        color: 'red'
+    }]
+}
+
+
+
+
+
 
 function onSortByTag(tag) {
     debugger
