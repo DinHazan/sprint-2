@@ -10,7 +10,7 @@ function renderImg(imgs) {
     elImgContainer.innerHTML = ''
     imgs.forEach(function (img) {
         elImgContainer.innerHTML += `
-        <li class="flex container"><img src="${img.url}" alt="" onclick="renderImgToCanvas( this ,'${img.url}' , '${img.id}')"></li>
+        <li class="flex"><img src="${img.url}" alt="" onclick="renderImgToCanvas( this ,'${img.url}' , '${img.id}')"></li>
         `
     })
     renderStyleTools()
@@ -45,16 +45,20 @@ function renderImgToCanvas(elImg, imgUrl, id) {
     console.log(imgUrl);
     var height = gCurrentImg.naturalHeight;
     var width = gCurrentImg.naturalWidth;
+    var ratio = height / width
     console.log(width);
     var elImgContainer = document.querySelector('.img-container')
     elImgContainer.style.display = 'none'
-    renderCanvas(imgUrl, height, width)
+    renderCanvas(imgUrl, ratio)
 }
 
-function renderCanvas(url, height, width) {
+
+function renderCanvas(url, ratio) {
     var elCanvasContainer = document.querySelector('.canvas-container')
-    gCanvas = document.querySelector('#myCanvas')
     elCanvasContainer.style.display = 'flex'
+    gCanvas = document.querySelector('#myCanvas')
+    var width = window.innerWidth / 2;
+    var height = width * ratio;
     gCanvas.width = width
     gCanvas.height = height
     gCtx = gCanvas.getContext('2d')
@@ -74,9 +78,12 @@ function updateStyle(ev, txt) {
     var elFontAlign = document.querySelector('.font-align')
     var elFontSize = document.querySelector('.font-size')
     var elFontColor = document.querySelector('.font-color')
-    gMeme.txts[gMeme.txts.length-1].size = elFontSize.value;
+    var elBackgroundColor = document.querySelector('.background-color')
+    var elCanvas = document.querySelector('canvas')
+    elCanvas.style.backgroundColor = elBackgroundColor.value
+    gMeme.txts[gMeme.txts.length - 1].size = elFontSize.value;
     // gMeme.txts[0].align = elFontAlign.innerText;
-    // gMeme.txts[0].color = elFontColor.innerText;
+    gMeme.txts[gMeme.txts.length - 1].color = elFontColor.value;
 
     drawText(txt, 256, 200)
     // gCtx.fillText(txt, 50, 50)
@@ -104,8 +111,8 @@ function addInput(x, y) {
     var input = document.createElement('input');
     input.type = 'text';
     input.style.position = 'fixed';
-    input.style.left = (x - 4) + 'px';
-    input.style.top = (y - 4) + 'px';
+    input.style.left = x + 'px';
+    input.style.top = y + 'px';
     input.style.background = 'transparent'
     input.onkeydown = handleEnter;
     document.body.appendChild(input);
@@ -121,24 +128,51 @@ function handleEnter(ev) {
 }
 
 function drawText(txt, x, y) {
-    if (txt !==undefined) {
-        gMeme.txts[gMeme.txts.length] = gMeme.txts[gMeme.txts.length - 1]
+    if (txt !== undefined) {
+        gMeme.txts.push(gMeme.txts[0])
         gMeme.txts[gMeme.txts.length - 1].line = txt
     }
-    var elFont = document.querySelector('.font')
+    debugger
+    var elFont = document.querySelector('input[name="font"]:checked').value
     var imgUrl = gImgs[gMeme.selectedImgId - 1].url
     drawImage(imgUrl)
+    x = '150'
+    y = '150'
+    var pos = getMousePos(gCanvas, x, y)
+    x = pos.x
+    y = pos.y
+    setTimeout(renderTxt, 1)
 
     function renderTxt() {
         gMeme.txts.forEach(function (text) {
-            var fontSize = text.size + 'px' + ' ' + elFont.value
-            gCtx.fillStyle = 'red'
+            var fontSize = text.size + 'px' + ' ' + elFont
+            gCtx.fillStyle = `${text.color}`
             gCtx.font = `${fontSize}`
             gCtx.textBaseline = 'top';
             gCtx.textAlign = 'left';
-            gCtx.font = font;
-            gCtx.fillText(text.line, x - 20, y - 110);
+            // gCtx.font = font;
+            gCtx.fillText(text.line, x, y);
         })
     }
-    setTimeout(renderTxt, 1)
+
+}
+
+
+
+function getMousePos(canvas, x, y) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: (x - rect.x),
+        y: (y - rect.y)
+    };
+}
+
+function isChecked() {
+    var radios = document.getElementsByName('font');
+    for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+            alert(radios[i].value);
+            break;
+        }
+    }
 }

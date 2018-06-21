@@ -37,38 +37,89 @@
             </form>
         </nav>
     </header>
-    <main>
-
-        <ul class="img-container flex container flex-wrap clean-list">
+    <main class="flex">
+        <ul class="img-container flex container flex-wrap clean-list space-between">
         </ul>
-        <div class="canvas-container space-around">
+        <div class="canvas-container space-between">
             <canvas id="myCanvas" style="outline:1px solid grey" onclick="touchCanvas(event)"></canvas>
-            <div class="style-tools flex">
-                <form>
-                    <h3>
-                        Enter Your Text :
-                    </h3>
-                    <input class="canvasTxt" type="text" name="text" placeholder="write something funny" onkeyup="updateStyle(event ,this.value)"/>
-                    <h3>
-                        Enter Font Style :
-
-                    </h3>
-                    <input list="font" name="value" class="font" onkeyup="updateStyle(event)">
-                    <datalist id="font">
-                        <option value="arial">
-                            <option value="sans-serif">
-                    </datalist>
-                    <div class="fontSize-container">
+            <ul class="style-tools flex column">
+                <li>
+                    <form>
                         <h3>
-                            Enter Font Size :
-
+                            Enter Your Text :
                         </h3>
-                        <input list="font-size" name="value" class="font-size" onkeyup="updateStyle(event)">
-                        <datalist id="font-size">
-                        </datalist>
-                    </div>
-                </form>
-            </div>
+                        <input class="canvasTxt" type="text" name="text" placeholder="write something funny" onkeyup="updateStyle(event ,this.value)"
+                        />
+                    </form>
+                </li>
+                <li>
+                    <fieldset  class="font">
+                            <legend>Enter Font Style :</legend>
+                            <div>
+                                <input type="radio"  name="font" checked />
+                                <label for="huey">high</label>
+                            </div>
+                            <div>
+                                <input type="radio"  name="font" />
+                                <label for="dewey">sans-serif</label>
+                            </div>
+                            <div>
+                                <input type="radio"  name="font" />
+                                <label for="louie">arial</label>
+                            </div>
+                        </fieldset>
+                </li>
+                <li class="fontSize-container">
+                    <h3>
+                        Enter Font Size :
+
+                    </h3>
+                    <input list="font-size" name="value" class="font-size" onkeyup="updateStyle(event)">
+                    <datalist id="font-size">
+                    </datalist>
+                </li>
+                <li>
+                    <fieldset>
+                        <legend>Select a maintenance drone</legend>
+                        <div>
+                            <input type="radio" id="huey" name="drone" checked />
+                            <label for="huey">high</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="dewey" name="drone" />
+                            <label for="dewey">midlle</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="louie" name="drone" />
+                            <label for="louie">bottom</label>
+                        </div>
+                    </fieldset>
+                </li>
+
+                <li>
+                    <h3>Shadow Switch</h3>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </li>
+                <li>
+                    <form>
+                        <h3>
+                            Select your font color:
+                        </h3>
+                        <input class="font-color" type="color" name="favcolor" value="#ff0000" onchange="updateStyle(event)">
+                    </form>
+                </li>
+                <li>
+                    <form>
+                        <h3>
+                            Select your Meme background color:
+                        </h3>
+                        <input class="background-color" type="color" name="favcolor" value="#ff0000" onchange="updateStyle(event)">
+                    </form>
+                </li>
+            </ul>
         </div>
     </main>
     <footer>
