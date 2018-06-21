@@ -81,7 +81,6 @@ var gMeme = {
 
 
 function onSortByTag(tag) {
-    debugger
     tag = tag.toLowerCase()
 
     var fliteredImgs = gImgs.filter(function (img) {

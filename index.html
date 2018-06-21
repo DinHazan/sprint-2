@@ -9,50 +9,64 @@
 </head>
 
 <body>
-    <header class="flex">
-        <nav class="flex space-between ">
-            <form>
-                <input list="value" name="value" class="val">
-                <datalist id="value">
-                    <option value="Happy">
-                        <option value="Crazy">
-                            <option value="Sarcastic">
-                                <option value="Sad">
-                                    <option value="Animal">
-                </datalist>
-                <input type="button" onclick="sortByTag(event)">
-            </form>
+    <header class="flex space-around">
+        <nav class="flex">
+            <ul class="clean-list flex space-around">
+                <li>
+                    <button onclick="returnBack()">home</button>
+                </li>
+                <li>
+                    <form class="search flex ">
+                        <input list="value" name="value" class="val">
+                        <datalist id="value">
+                            <option value="Happy">
+                                <option value="Crazy">
+                                    <option value="Sarcastic">
+                                        <option value="Sad">
+                                            <option value="Animal">
+                        </datalist>
+                        <input type="button" onclick="sortByTag(event)">
+                    </form>
+                </li>
+                <li>PORTFOLIO</li>
+                <li>ABOUT</li>
+                <li>BLOG</li>
+                <li>GET IN TOUCH</li>
+            </ul>
             </div>
             </form>
-            <ul>
-
-            </ul>
         </nav>
     </header>
     <main>
-        <div>
-            <button onclick="returnBack()"></button>
-        </div>
-        <ul class="img-container flex container clean-list">
+
+        <ul class="img-container flex container flex-wrap clean-list">
         </ul>
-        <div class="canvas-container">
-            <canvas id="myCanvas" style="outline:1px solid grey"></canvas>
-            <div class="style-tools">
+        <div class="canvas-container space-around">
+            <canvas id="myCanvas" style="outline:1px solid grey" onclick="touchCanvas(event)"></canvas>
+            <div class="style-tools flex">
                 <form>
-                    Enter Your Text :
-                    <br>
-                    <input class="canvasTxt" type="text" name="text">
-                    <input list="font" name="value" class="font"  onkeyup="drawText(event , this.value)">
+                    <h3>
+                        Enter Your Text :
+                    </h3>
+                    <input class="canvasTxt" type="text" name="text" placeholder="write something funny" onkeyup="updateStyle(event ,this.value)"/>
+                    <h3>
+                        Enter Font Style :
+
+                    </h3>
+                    <input list="font" name="value" class="font" onkeyup="updateStyle(event)">
                     <datalist id="font">
                         <option value="arial">
                             <option value="sans-serif">
                     </datalist>
                     <div class="fontSize-container">
-                        <div class="font-size">0</div>
-                        <button onclick="fontSizeRender(event ,(+2))">▲</button>
-                        <button onclick="fontSizeRender(event ,(-2))">▼</button>
+                        <h3>
+                            Enter Font Size :
+
+                        </h3>
+                        <input list="font-size" name="value" class="font-size" onkeyup="updateStyle(event)">
+                        <datalist id="font-size">
+                        </datalist>
                     </div>
-                    <input type="button" onclick="drawText(event)">
                 </form>
             </div>
         </div>
