@@ -125,23 +125,50 @@ var gImgs = [{
         url: 'img/025.jpg',
         keywords: ['happy']
     },
-    
+
 ]
 
 
 var gMeme = {
     selectedImgId: 5,
-    txts: [{
-        line: 'I  never  eat  Falafel',
-        size: 20,
-        align: 'left',
-        color: 'red'
-    }]
+    txts: [
+        /*{
+                line: 'I  never  eat  Falafel',
+                size: 20,
+                align: 'left',
+                color: 'red',
+            
+            }*/
+    ]
 }
 
+var gTags = [
+    {
+        tag: 'happy',
+        chooseCount: 0
+    },
+    {
+        tag: 'crazy',
+        chooseCount: 0
+    },
+    {
+        tag: 'sarcastic',
+        chooseCount: 0
+    },
+    {
+        tag: 'sad',
+        chooseCount: 0
+    },
+    {
+        tag: 'animal',
+        chooseCount: 0
+    }
+]
 
 
-
+function addMeme(newText) {
+    gMeme.txts.push(newText)
+}
 
 
 function onSortByTag(tag) {
@@ -152,10 +179,16 @@ function onSortByTag(tag) {
             if (keyword === tag) {
                 return true
             }
+
         })
         if (isTagMatch === true) {
             return img
         }
     })
+    if (fliteredImgs.length > 0) {
+        for (let i = 0; i < gTags.length; i++) {
+            if(gTags[i].tag === tag)   gTags[i].chooseCount = gTags[i].chooseCount + 1 
+        }
+    }
     return fliteredImgs
 }

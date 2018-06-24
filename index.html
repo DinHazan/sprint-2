@@ -5,40 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="font/impact.ttf">
     <title>Document</title>
 </head>
 
 <body>
-    <header class="flex space-around">
-        <nav class="flex">
+    <header class="flex space-around column">
+        <h2 class="self-center">Meme Genrator</h2>
+        <nav class="flex space-between">
+            <div class="home">
+                <button onclick="returnBack()">home</button>
+            </div>
+        <form class="search flex">
+            <input list="value" name="value" class="val">
+            <datalist id="value">
+                <option value="Happy">
+                    <option value="Crazy">
+                        <option value="Sarcastic">
+                            <option value="Sad">
+                                <option value="Animal">
+                                </datalist>
+                                <input type="button" onclick="sortByTag(event)">
+                            </form>
             <ul class="clean-list flex space-around">
-                <li>
-                    <button onclick="returnBack()">home</button>
-                </li>
-                <li>
-                    <form class="search flex ">
-                        <input list="value" name="value" class="val">
-                        <datalist id="value">
-                            <option value="Happy">
-                                <option value="Crazy">
-                                    <option value="Sarcastic">
-                                        <option value="Sad">
-                                            <option value="Animal">
-                        </datalist>
-                        <input type="button" onclick="sortByTag(event)">
-                    </form>
-                </li>
                 <li>PORTFOLIO</li>
                 <li>ABOUT</li>
                 <li>BLOG</li>
                 <li>GET IN TOUCH</li>
             </ul>
-            </div>
-            </form>
-        </nav>
-    </header>
-    <main class="flex">
-        <ul class="img-container flex container flex-wrap clean-list space-between">
+        </form>
+    </nav>
+</header>
+<main class="flex column">
+        <ul class="img-container">
         </ul>
         <div class="canvas-container space-between">
             <canvas id="myCanvas" style="outline:1px solid grey" onclick="touchCanvas(event)"></canvas>
@@ -53,21 +52,21 @@
                     </form>
                 </li>
                 <li>
-                    <fieldset  class="font">
-                            <legend>Enter Font Style :</legend>
-                            <div>
-                                <input type="radio"  name="font" checked />
-                                <label for="huey">high</label>
-                            </div>
-                            <div>
-                                <input type="radio"  name="font" />
-                                <label for="dewey">sans-serif</label>
-                            </div>
-                            <div>
-                                <input type="radio"  name="font" />
-                                <label for="louie">arial</label>
-                            </div>
-                        </fieldset>
+                    <legend>Enter Font Style :</legend>
+                    <form id="font" name="fontStyle" onchange="updateStyle(event)">
+                        <div>
+                            <input type="radio" name="fontStyle" value="Impact" />
+                            <label for="huey">Impact</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="fontStyle" value="sans-serif" />
+                            <label for="dewey">sans-serif</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="fontStyle" value="arial" />
+                            <label for="louie">arial</label>
+                        </div>
+                    </form>
                 </li>
                 <li class="fontSize-container">
                     <h3>
@@ -79,21 +78,21 @@
                     </datalist>
                 </li>
                 <li>
-                    <fieldset>
-                        <legend>Select a maintenance drone</legend>
+                    <legend>Select a maintenance drone</legend>
+                    <form name="align-text" onchange="updateStyle(event)">
                         <div>
-                            <input type="radio" id="huey" name="drone" checked />
-                            <label for="huey">high</label>
+                            <input type="radio" id="huey" name="align" value="right" />
+                            <label for="huey">left</label>
                         </div>
                         <div>
-                            <input type="radio" id="dewey" name="drone" />
-                            <label for="dewey">midlle</label>
+                            <input type="radio" id="dewey" name="align" value="center" />
+                            <label for="dewey">center</label>
                         </div>
                         <div>
-                            <input type="radio" id="louie" name="drone" />
-                            <label for="louie">bottom</label>
+                            <input type="radio" id="louie" name="align" value="left" />
+                            <label for="louie">right</label>
                         </div>
-                    </fieldset>
+                    </form>
                 </li>
 
                 <li>
@@ -104,6 +103,13 @@
                     </label>
                 </li>
                 <li>
+                    <h3>text movment</h3>
+                    <button class="left">◀</button>
+                    <button class="right">▶</button>
+                    <button class="up">▲</button>
+                    <button class="down">▼</button>
+                </li>
+                <li>
                     <form>
                         <h3>
                             Select your font color:
@@ -111,19 +117,40 @@
                         <input class="font-color" type="color" name="favcolor" value="#ff0000" onchange="updateStyle(event)">
                     </form>
                 </li>
-                <li>
-                    <form>
-                        <h3>
-                            Select your Meme background color:
-                        </h3>
-                        <input class="background-color" type="color" name="favcolor" value="#ff0000" onchange="updateStyle(event)">
-                    </form>
-                </li>
             </ul>
         </div>
     </main>
-    <footer>
-
+    
+<footer class="flex">
+  <section class="me flex" id="me" style="padding: 20px;">
+        <div class="flex space-between">
+          <div class="flex column">
+            <div class="team-member flex column align-center">
+              <img class="mx-auto rounded-circle" src="img/MyProfile.jpg" alt="">
+              <h4>Din Hazan</h4>
+              <p class="text-muted">Web Developer Student</p>
+              <ul class="clean-list">
+                <li class="list-inline-item">
+                  <a href="https://www.facebook.com/din.hazan2">
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="#">
+                    <i class="fa fa-linkedin"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="flex flex-wrap column align-center about-me">
+              <h3>About me... </h3>
+            <p>Hey , my name is Din Hazan , from Tel Aviv , I am 21 years old , I got relased from the army 2 mouths ago. At the
+              army I was at a technological and operational unit , I finished my training at the top of my class and got a reward.
+              I was a staff sergeant , I comenned on other squad commanders that had soliders at operational tasks .</p>
+            </div>
+          </div>
+        </section>
     </footer>
 
     <script src="js/imgs-service.js"></script>

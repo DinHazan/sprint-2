@@ -4,7 +4,7 @@
 var gCtx
 var gCanvas
 var gCurrentImg
-
+var gSelectedText;
 function renderImg(imgs) {
     var elImgContainer = document.querySelector('.img-container')
     elImgContainer.innerHTML = ''
@@ -19,11 +19,11 @@ renderImg(gImgs)
 
 function renderStyleTools() {
     var elFontSize = document.querySelector('#font-size')
-    for (var i = 0; i < 100;) {
+    for (var i = 10; i < 100;) {
         elFontSize.innerHTML += `
         <option value="${i}">
         `
-        i = i + 2
+        i = i + 10
     }
 }
 
@@ -37,6 +37,7 @@ function sortByTag(ev) {
         elImgContainer.innerHTML = ''
         renderImg(newImgs)
     }
+    displayOftenKeyword()  
 }
 
 function renderImgToCanvas(elImg, imgUrl, id) {
@@ -46,7 +47,6 @@ function renderImgToCanvas(elImg, imgUrl, id) {
     var height = gCurrentImg.naturalHeight;
     var width = gCurrentImg.naturalWidth;
     var ratio = height / width
-    console.log(width);
     var elImgContainer = document.querySelector('.img-container')
     elImgContainer.style.display = 'none'
     renderCanvas(imgUrl, ratio)
@@ -58,50 +58,82 @@ function renderCanvas(url, ratio) {
     elCanvasContainer.style.display = 'flex'
     gCanvas = document.querySelector('#myCanvas')
     var width = window.innerWidth / 2;
-    var height = width * ratio;
-    gCanvas.width = width
-    gCanvas.height = height
+    var height = Math.min(width * ratio, window.innerHeight);
+    gCanvas.width = width;
+    gCanvas.height = height;
+    console.log('width', width);
+    console.log('height', height);
     gCtx = gCanvas.getContext('2d')
     drawImage(url)
 }
 
 function drawImage(url) {
+    console.log('width', gCanvas.width);
+    console.log('height', gCanvas.height);
     var img = new Image()
     img.src = url
     img.onload = function () {
+        img.height = gCanvas.height;
+        console.log(img);
+        img.width = gCanvas.width;
         gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height)
     }
 }
 
+var gTextAlign;
+var gFontSize;
+var gFontColor;
+var gFont;
+var gTextPos = {
+    x: 10,
+    y: 20,
+}
+
 function updateStyle(ev, txt) {
     ev.preventDefault()
-    var elFontAlign = document.querySelector('.font-align')
-    var elFontSize = document.querySelector('.font-size')
-    var elFontColor = document.querySelector('.font-color')
-    var elBackgroundColor = document.querySelector('.background-color')
-    var elCanvas = document.querySelector('canvas')
-    elCanvas.style.backgroundColor = elBackgroundColor.value
-    gMeme.txts[gMeme.txts.length - 1].size = elFontSize.value;
-    // gMeme.txts[0].align = elFontAlign.innerText;
-    gMeme.txts[gMeme.txts.length - 1].color = elFontColor.value;
-
-    drawText(txt, 256, 200)
-    // gCtx.fillText(txt, 50, 50)
-    // renderCanvas()
-    // gCtx.strokeText(txt, 150, 150)
+    gTextAlign = getRadioCheckedValue('align-text', 'align')
+    gFontSize = document.querySelector('.font-size') === null ? '20' : document.querySelector('.font-size').value
+    gFontColor = document.querySelector('.font-color') === null ? 'red' : document.querySelector('.font-color').value
+    gFont = getRadioCheckedValue('fontStyle', 'fontStyle')
+    if (gMeme.txts.length > 0) {
+        var lastText = gMeme.txts[gMeme.txts.length - 1];
+        lastText.color = gFontColor;
+        lastText.size = gFontSize;
+        lastText.align = gTextAlign;
+        lastText.font = gFont;
+    }
+    drawText(txt, 164, 278)
 }
 
 function returnBack() {
     var elCanvasContainer = document.querySelector('.canvas-container')
     var elImgContainer = document.querySelector('.img-container')
     elCanvasContainer.style.display = 'none'
-    elImgContainer.style.display = 'flex'
+    elImgContainer.style.display = 'grid'
     renderImg(gImgs)
 }
-
+function isValidPlace(x , y){
+    debugger
+    var pos = getMousePos(gCanvas, x, y)
+    if(!gMeme.txts) return
+    var selectText = gMeme.txts.filter(function(meme){
+        var width =  meme.X + meme.size * meme.line.length 
+        var height =  meme.Y - meme.size 
+        if(width >= pos.x && pos.x >= meme.X && height <= pos.y && pos.y <= meme.Y) return meme
+    })
+    console.log('selected text' , selectText);
+    if(selectText){
+        gSelectedText = selectText;
+        return
+    }
+}
 
 function touchCanvas(ev) {
-    addInput(ev.clientX, ev.clientY);
+    gTextPos.x = ev.clientX
+    gTextPos.y = ev.clientY
+    isValidPlace(gTextPos.x , gTextPos.y)
+    addInput(gTextPos.x, gTextPos.y);
+    console.log("touchCanvas: X: " + ev.clientX + " Y: " + ev.clientY);
 }
 
 function addInput(x, y) {
@@ -128,42 +160,49 @@ function handleEnter(ev) {
 }
 
 function drawText(txt, x, y) {
-    if (txt !== undefined) {
-        gMeme.txts.push(gMeme.txts[0])
-        gMeme.txts[gMeme.txts.length - 1].line = txt
-    }
-    debugger
-    var elFont = document.querySelector('input[name="font"]:checked').value
     var imgUrl = gImgs[gMeme.selectedImgId - 1].url
     drawImage(imgUrl)
-    x = '150'
-    y = '150'
     var pos = getMousePos(gCanvas, x, y)
-    x = pos.x
-    y = pos.y
-    setTimeout(renderTxt, 1)
+    console.log("After getMousePos:\n x: " + pos.x + "\n y: " + pos.y);
+    x = pos.x;
+    y = pos.y;
 
-    function renderTxt() {
-        gMeme.txts.forEach(function (text) {
-            var fontSize = text.size + 'px' + ' ' + elFont
-            gCtx.fillStyle = `${text.color}`
-            gCtx.font = `${fontSize}`
-            gCtx.textBaseline = 'top';
-            gCtx.textAlign = 'left';
-            // gCtx.font = font;
-            gCtx.fillText(text.line, x, y);
-        })
+    if (txt !== '') {
+        var newText = {}; //=new Text();
+        newText.line = txt;
+        newText.size = gFontSize === undefined ? '30' : gFontSize;
+        newText.color = gFontColor === undefined ? 'red' : gFontColor;;
+        newText.align = gTextAlign === undefined ? 'center' : gTextAlign;
+        newText.font = gFont === undefined ? 'impact' : gFont;
+        newText.X = x+10;
+        newText.Y = y+10;
+        addMeme(newText)
     }
+    setTimeout(renderTxt, 1)
 
 }
 
+function textPosUpdateX(num) {
+    gTextPos.x += num
+}
 
+function renderTxt() {
+    gMeme.txts.forEach(function (text) {
+        var fontSize = text.size + 'px' + ' ' + text.font
+        gCtx.fillStyle = `${text.color}`
+        gCtx.font = `${fontSize}`
+        gCtx.textBaseline = 'Middle';
+        gCtx.textAlign = text.align;
+        gCtx.fillText(text.line, text.X, text.Y);
+    })
+}
 
 function getMousePos(canvas, x, y) {
     var rect = canvas.getBoundingClientRect();
+    console.log("getMousePos:\n x: " + x + "\n y: " + y);
     return {
-        x: (x - rect.x),
-        y: (y - rect.y)
+        x: (x - rect.left),
+        y: (y - rect.top)
     };
 }
 
@@ -175,4 +214,36 @@ function isChecked() {
             break;
         }
     }
+}
+
+function getRadioCheckedValue(form_name, option) {
+    var radios = document.forms[form_name][option]
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            return radios[i].value;
+        }
+    }
+}
+
+function displayOftenKeyword() {
+    debugger
+    var avg = 0;
+    gTags.forEach(function (tag) {
+        avg += tag.chooseCount
+    })
+    var mostComoons = gTags.map(function (tag) {
+        return (tag / avg)
+    })
+
+    console.log(mostComoons);
+
+}
+
+
+function displayKeywords(mostComkeys) {
+    mostComkeys.forEach(function (keyPres) {
+        if(key < 10){
+            render
+        }
+    })
 }
